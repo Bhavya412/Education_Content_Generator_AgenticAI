@@ -25,24 +25,23 @@ This project demonstrates modular AI agent design using Python, LLM integration,
 - cd Education_Content_Generator_AgenticAI
 
 2. Create virtual environment (recommended)
-python -m venv venv
+- python -m venv venv
 
 **Activate it:**
-Windows:
-venv\Scripts\activate
-Mac/Linux:
-source venv/bin/activate
+- Windows:
+   - venv\Scripts\activate
+- Mac/Linux:
+   - source venv/bin/activate
 
 3. Install dependencies
-pip install -r requirements.txt
-🔑 Environment Variables
-Create a file named .env in the project root:
-GROQ_API_KEY=your_api_key_here
-⚠️ Never upload .env to GitHub
-
+- pip install -r requirements.txt
+   - 🔑 Environment Variables
+- Create a file named .env in the project root:
+   - GROQ_API_KEY=your_api_key_here
+   
 4. Run the project
-python app.py
+- python app.py
 
 5. Run tests
-python test_copilot.py
+- python test_copilot.py
 
