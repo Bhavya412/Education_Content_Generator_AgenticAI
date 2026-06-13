@@ -453,12 +453,22 @@ st.set_page_config(
 
 
 # ── API KEY ──
-env_api_key = os.getenv("GROQ_API_KEY")
-has_env_key = env_api_key and env_api_key != "gsk_your_groq_api_key_here" and env_api_key.strip() != ""
-if "groq_api_key" not in st.session_state:
-    st.session_state.groq_api_key = env_api_key if has_env_key else ""
-elif has_env_key:
-    st.session_state.groq_api_key = env_api_key
+def get_api_key() -> str:
+    # Try Streamlit secrets first (standard for production/deployment)
+    try:
+        if "GROQ_API_KEY" in st.secrets:
+            key = st.secrets["GROQ_API_KEY"]
+            if key and key.strip() and key != "gsk_your_groq_api_key_here":
+                return key.strip()
+    except Exception:
+        pass
+    # Fallback to environment variables
+    env_key = os.getenv("GROQ_API_KEY")
+    if env_key and env_key.strip() and env_key != "gsk_your_groq_api_key_here":
+        return env_key.strip()
+    return ""
+
+api_key = get_api_key()
 
 # ── SESSION MANAGEMENT ──
 # 1. Retrieve or generate user_id
@@ -542,9 +552,6 @@ with st.sidebar:
                 st.rerun()
 
     st.markdown("<p class='sidebar-label'>Settings</p>", unsafe_allow_html=True)
-    if not has_env_key:
-        st.text_input("Groq API Key", type="password", key="groq_api_key",
-                      help="Get a key from console.groq.com", placeholder="gsk_...")
 
     if st.button("🗑  Clear All History", use_container_width=True):
         clear_database()
@@ -955,10 +962,10 @@ if user_query:
         short_title = user_query[:35] + "..." if len(user_query) > 35 else user_query
         update_session_title(st.session_state.current_session_id, short_title)
 
-    if not st.session_state.groq_api_key:
+    if not api_key:
         save_message(
             st.session_state.current_session_id, "assistant",
-            "⚠️ Groq API Key is missing. Please configure GROQ_API_KEY in your `.env` file or enter it in the sidebar.",
+            "⚠️ Groq API Key is missing. Please configure GROQ_API_KEY as a Streamlit Secret (production) or environment variable (development).",
             "chat"
         )
         st.rerun()
@@ -969,7 +976,7 @@ if user_query:
                 pdf_text=pdf_text,
                 pdf_hash=pdf_hash,
                 chat_history=get_messages(st.session_state.current_session_id),
-                api_key=st.session_state.groq_api_key
+                api_key=api_key
             )
             intent   = res_dict["intent"]
             response = res_dict["response"]
