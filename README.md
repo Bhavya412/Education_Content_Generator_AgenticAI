@@ -45,3 +45,4 @@ This project demonstrates modular AI agent design using Python, LLM integration,
 5. Run tests
 - python test_copilot.py
 
+**Live Demo:https://educational-content-generator.streamlit.app/**
