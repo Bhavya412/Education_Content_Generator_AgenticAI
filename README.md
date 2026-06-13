@@ -21,8 +21,8 @@ This project demonstrates modular AI agent design using Python, LLM integration,
 **⚙️ Installation**
 
 1. Clone the repository
-git clone https://github.com/Bhavya412/Education_Content_Generator_AgenticAI.git
-cd Education_Content_Generator_AgenticAI
+- git clone https://github.com/Bhavya412/Education_Content_Generator_AgenticAI.git
+- cd Education_Content_Generator_AgenticAI
 
 2. Create virtual environment (recommended)
 python -m venv venv
